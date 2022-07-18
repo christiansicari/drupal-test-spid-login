@@ -1,0 +1,42 @@
+# Runnare ISP di Prova
+https://github.com/italia/spid-saml-check
+
+```bash
+docker run -t -i -p 8088:8443 italia/spid-saml-check:1.9.0
+```
+
+# Drupal
+verificare sia settata private nel settings.php
+```bash
+$settings['file_private_path'] = '/home/private'; // o qualche altro path
+```
+Creare una cartella microspid dentro la cartella private, assegnare come utente owner www-data
+
+installare modulo: https://www.drupal.org/project/microspid
+
+Dalle configurazioni del modulo:
+1. creare cerficato
+2. riempire campi obbligatori anagrafici.
+3. Abilitare idp id test
+
+## Workflow login:
+Il modulo attualmente segue il seguente flusso. 
+1. Il bottone di login carica gli ISP provider tramite l'elenco contenuto in: /opt/drupal/web/modules/contrib/microspid/microspid.module
+2. Il metadata dell'ISP viene prelevato in /opt/drupal/web/modules/contrib/microspid/src/Service/SpidPaswManager.php riga 1100
+3. testare login
+4. inserire come credenziali validator:validator
+5. sulla pagina metadata inserire URL della pagina drupal con i metadati presente nella conf del modulo tipo (https://url.it/microspid_metadata)
+6. Andare in response e modificare la voce Issuer inserendo l'URI del ISP locale raggiungibile a drupal inserito nell'elenco sottostante al punto 2, es https://example.com:8088
+8. enjoy
+
+
+## Cosa modificare
+1. Scaricare il file dell'ISP di test all'indirizzo https://localhost:8088/metadata.xml. Sostituire all'interno del file "localhost:8088" con un indirizzo raggiungibile dall'istanza drupal che deve usare il metadata es: https://example.com:8088
+2. in drupal in /opt/drupal/web/modules/contrib/microspid/src/Service/SpidPaswManager.php, cercare l'isp di prova settato su localhost:8088, copiare la riga che mappa l'isp sul metadata e modificare l'url con https://example.com:8088. 
+2. Su drupal, nel file /opt/drupal/web/modules/contrib/microspid/src/Service/SpidPaswManager.php t l'ISP provider di test è settato 3. Copiare su /opt/drupal/web/modules/contrib/microspid/metadata/testenv2.xml il file metadata modificato al punto 1
+4. Se modifichiamo il file /opt/drupal/web/modules/contrib/microspid/microspid.module in modo tale che il bottone test spid non punti a localhost a d example.com, al punto 2 possiamo direttamente eliminare la riga che mappa l'isp localhost sul suo metadata.
+
+
+
+
+
