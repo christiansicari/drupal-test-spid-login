@@ -1,5 +1,6 @@
 # Runnare ISP
 ## Editare server.json
+```bash
 {
   "host": "https://myisp.org",  # INSERIRE HOST DA CUI RAGGIUNGERE ISP ESTERNAMENTE
   "port": 443, # INSERIRE PORTA DA CUI RAGGIUNGERE ISP ESTERNAMENTE
@@ -8,6 +9,7 @@
 	"httpsPrivateKey": "./config/spid-saml-check.key",
   "httpsCertificate": "./config/spid-saml-check.crt"
 }
+```
 I campi Host e Port saranno usati nel file metadata per settare correttamente gli indirizzi di logout. Assicurarsi che host e port siano raggiungibili dall'instanza Drupal
 
 ## Editare idp.json
