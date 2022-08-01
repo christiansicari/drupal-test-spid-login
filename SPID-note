@@ -10,8 +10,7 @@ verificare sia settata private nel settings.php
 ```bash
 $settings['file_private_path'] = '/home/private'; // o qualche altro path
 ```
-Creare una cartella microspid dentro la cartella private, assegnare come utente owner www-data
-
+Settare il proprietato della cartella appena associata a file_private_path a www-data:www-data
 installare modulo: https://www.drupal.org/project/microspid
 
 Dalle configurazioni del modulo:
@@ -32,9 +31,12 @@ Il modulo attualmente segue il seguente flusso.
 
 ## Cosa modificare
 1. Scaricare il file dell'ISP di test all'indirizzo https://localhost:8088/metadata.xml. Sostituire all'interno del file "localhost:8088" con un indirizzo raggiungibile dall'istanza drupal che deve usare il metadata es: https://example.com:8088
-2. in drupal in /opt/drupal/web/modules/contrib/microspid/src/Service/SpidPaswManager.php, cercare l'isp di prova settato su localhost:8088, copiare la riga che mappa l'isp sul metadata e modificare l'url con https://example.com:8088. 
-2. Su drupal, nel file /opt/drupal/web/modules/contrib/microspid/src/Service/SpidPaswManager.php t l'ISP provider di test è settato 3. Copiare su /opt/drupal/web/modules/contrib/microspid/metadata/testenv2.xml il file metadata modificato al punto 1
-4. Se modifichiamo il file /opt/drupal/web/modules/contrib/microspid/microspid.module in modo tale che il bottone test spid non punti a localhost a d example.com, al punto 2 possiamo direttamente eliminare la riga che mappa l'isp localhost sul suo metadata.
+2. Copiare su /opt/drupal/web/modules/contrib/microspid/metadata/testenv2.xml il file metadata modificato al punto 1
+
+Note
+L'associazione con l'ISP viene fatta su /opt/drupal/web/modules/contrib/microspid/src/Service/SpidPaswManager, a riga 1100 tramite un 
+dizionario, in questo caso il file testenv2.xml è associato a localhost:8088 che viene inviato dal form di login al click del tasto
+login. Non ci interessa che dica localhost nel form, perchè 'indirizzo dell'ISP viene caricato dal metadata.xml
 
 
 
