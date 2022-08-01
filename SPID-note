@@ -32,11 +32,13 @@ Il modulo attualmente segue il seguente flusso.
 ## Cosa modificare
 1. Scaricare il file dell'ISP di test all'indirizzo https://localhost:8088/metadata.xml. Sostituire all'interno del file "localhost:8088" con un indirizzo raggiungibile dall'istanza drupal che deve usare il metadata es: https://example.com:8088
 2. Copiare su /opt/drupal/web/modules/contrib/microspid/metadata/testenv2.xml il file metadata modificato al punto 1
+3. Copiare su /opt/drupal/web/modules/contrib/microspid/src/Service/SpidPaswManager la riga che associa l'ISP di prova al file testenv2.xml sostituendo all'indirizzo localhost l'indirizzo dell'ISP, es https://example.com:8088
 
 Note
 L'associazione con l'ISP viene fatta su /opt/drupal/web/modules/contrib/microspid/src/Service/SpidPaswManager, a riga 1100 tramite un 
 dizionario, in questo caso il file testenv2.xml è associato a localhost:8088 che viene inviato dal form di login al click del tasto
 login. Non ci interessa che dica localhost nel form, perchè 'indirizzo dell'ISP viene caricato dal metadata.xml
+Quando l'ISP risponde però Drupal estrae il dominio dell'ISp e cerca il metadato. per questo al punto 3 associato example.com anche con testenv2.xml
 
 
 
